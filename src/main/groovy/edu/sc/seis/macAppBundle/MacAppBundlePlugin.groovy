@@ -351,7 +351,7 @@ class MacAppBundlePlugin implements Plugin<Project> {
 
     private CopySpec configureDistSpec(Project project) {
         CopySpec distSpec = project.copySpec {}
-        def jar = project.tasks[JavaPlugin.JAR_TASK_NAME]
+        def jar = project.tasks["shadowJar"]
 
         distSpec.with {
             from(jar)
