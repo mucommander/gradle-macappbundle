@@ -355,7 +355,6 @@ class MacAppBundlePlugin implements Plugin<Project> {
 
         distSpec.with {
             from(jar)
-            from(project.configurations.runtime)
         }
 
         return distSpec
