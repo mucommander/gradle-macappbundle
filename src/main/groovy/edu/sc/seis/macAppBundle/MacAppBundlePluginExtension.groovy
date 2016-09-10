@@ -189,6 +189,8 @@ class MacAppBundlePluginExtension implements Serializable {
            set background picture of viewOptions to file ".background:\${DMG_BACKGROUND_IMG}"
            set position of item "\${APP_NAME}.app" of container window to { \${APPICONX}, \${APPICONY} }
            set position of item "Applications" of container window to { \${APPFOLDERX}, \${APPFOLDERY} }
+           set position of item "license.txt" of container window to { 75, 75 }
+           set position of item "readme.txt" of container window to { 375, 75 }
            close
            open
            update without registering applications

@@ -34,6 +34,7 @@ class MacAppBundlePlugin implements Plugin<Project> {
     static final String TASK_COPY_BKGD_IMAGE_NAME = "copyBackgroundImage"
     static final String TASK_CREATE_DMG = "createDmg"
     static final String TASK_CREATE_ZIP = "createAppZip"
+    static final String TASK_COPY_TEXT_FILES = "copyTextFiles"
 
 
     void apply(Project project) {
@@ -69,8 +70,9 @@ class MacAppBundlePlugin implements Plugin<Project> {
         Task codeSignTask = addCodeSignTask(project)
         codeSignTask.dependsOn(createAppTask)
         Task copyBkgImage = createCopyBackgroundImageTask(project)
+        Task copyTextFiles = createCopyTextFilesTask(project)
+        copyBkgImage.dependsOn(copyTextFiles)
         Task dmgTask = createDMGTask(project)
-        dmgTask.dependsOn(copyBkgImage)
         //dmgTask.dependsOn(dmgTask)
         dmgTask.dependsOn(createAppTask)
         dmgTask.dependsOn(copyBkgImage)
@@ -254,6 +256,21 @@ class MacAppBundlePlugin implements Plugin<Project> {
         return task
     }
 
+
+    private Task createCopyTextFilesTask(Project project) {
+        Task task = project.tasks.create(TASK_COPY_TEXT_FILES, Sync)
+        task.description = "Copies readme and license files"
+        task.group = GROUP
+
+        project.afterEvaluate {
+            task.from("./package/") {
+               include ('readme.txt')
+               include ('license.txt')
+            }
+            task.into "${->project.buildDir}/${->project.macAppBundle.appOutputDir}/"
+        }
+        return task
+    }
 
 
     private Task createCopyBackgroundImageTask(Project project) {
